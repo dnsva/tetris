@@ -16,7 +16,7 @@ int SCORE = 0; //score
 int BOARD[100][100] = {}; //THE BOARD
 
 //FUNCTIONS
-bool check_valid_pos(vector<pair<int,int>>curr_coords); //checks if valid
+bool check_valid_pos(vector<pair<int,int>>curr_coords, vector<pair<int,int>>old_coords = {}); //checks if valid
 void update_block_pos(vector<pair<int,int>>coords, int type); //updates block pos 
 
 struct block{ //class
@@ -107,20 +107,22 @@ struct block{ //class
             new_coords[i].second = cy - (tmp_x - cx); //calculate 
 
         }
-        if(check_valid_pos(new_coords)){ //if valid 
+        if(check_valid_pos(new_coords, coords)){ //if valid 
             coords = {new_coords}; //make the real coords these
             update_block_pos(coords, type); //update the blocks position in main board array
         }
     }
 
     bool check_collision(){ //check if collision with board 
-       for(pair<int,int>p:coords){ //for each coordinate
-        if(BOARD[p.first+1][p.second] == 1){ //if collided
+        vector<pair<int,int>>new_coords(coords); //make copy 
+        for(int i = 0; i<new_coords.size(); ++i){ //for each coord
+            new_coords[i].first++; //add to rows
+        }
+        if(!check_valid_pos(new_coords, coords)){ //if cannot move down
             this->type = 1; //set type to 1
             return true; //return true 
         }
-       }
-       return false; //otherwise if no collision
+        return false; //otherwise if no collision
     }
 
     void move_DOWN(){ //move block down 
@@ -128,7 +130,7 @@ struct block{ //class
         for(int i = 0; i<new_coords.size(); ++i){ //for each coord
             new_coords[i].first++; //add to rows
         }
-        if(check_valid_pos(new_coords)){ //check if valid 
+        if(check_valid_pos(new_coords, coords)){ //check if valid 
             coords = {new_coords}; //change 
             update_block_pos(coords, type); //add
         }
@@ -139,7 +141,7 @@ struct block{ //class
         for(int i = 0; i<new_coords.size(); ++i){ //for each coordinate
             new_coords[i].second--; //sub from cold
         }
-        if(check_valid_pos(new_coords)){ //check if valid
+        if(check_valid_pos(new_coords, coords)){ //check if valid
             coords = {new_coords}; //change 
             update_block_pos(coords, type); //add
         }
@@ -150,7 +152,7 @@ struct block{ //class
         for(int i = 0; i<new_coords.size(); ++i){ //for each coordinate
             new_coords[i].second++; //add to cols 
         }
-        if(check_valid_pos(new_coords)){ //check if valid
+        if(check_valid_pos(new_coords, coords)){ //check if valid
             coords = {new_coords}; //change
             update_block_pos(coords, type); //add
         }
@@ -158,7 +160,7 @@ struct block{ //class
 
 };
 
-bool check_valid_pos(vector<pair<int,int>>curr_coords){ //check if B is in valid position on board
+bool check_valid_pos(vector<pair<int,int>>curr_coords, vector<pair<int,int>>old_coords){ //check if B is in valid position on board
     for(pair<int,int>pos:curr_coords){ //for each coordinate 
         if(pos.first <= -1 || pos.second <= -1){ //if neg coords 
             return false; //bad
@@ -168,6 +170,18 @@ bool check_valid_pos(vector<pair<int,int>>curr_coords){ //check if B is in valid
         }
         if(pos.second < 1 || pos.second > BOARD_WIDTH-2){ //if not in existing cols
             return false; //bad 
+        }
+        if(BOARD[pos.first][pos.second] != 0){ //if occupied
+            bool is_old = false; //part of the moving piece
+            for(pair<int,int>old:old_coords){ //for each old coord
+                if(old.first == pos.first && old.second == pos.second){ //if same cell
+                    is_old = true; //ignore it
+                    break; //break
+                }
+            }
+            if(!is_old){ //if blocked by another block
+                return false; //bad
+            }
         }
     }
     return true; //if passed everything 

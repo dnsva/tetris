@@ -32,6 +32,7 @@ void init_board(){ //set each position to number
     }
 }
 
+
 void clear_board(){ //Reset EVERYTHING 
     init_board();   //clear
     SCORE = 0;      //score reset
@@ -141,25 +142,20 @@ void clear_rows(){ //clear full rows
 
 }
 
-bool check_game_over(){ //check if game is over
+bool check_game_over(){ //show game over screen
     
     int ch; //useless character var 
 
-    for (int j = 1; j < BOARD_WIDTH-1; j++){ //check if the first row has blocks
-        if (BOARD[1][j] == 1 ){ //if edge
-            clear(); //clear screen
-            printw("GAME OVER.\n"); //cout
-            printw("YOUR SCORE WAS: %d\n", SCORE); //cout
-            printw("\n[To close press any key]\n"); //cout
-            ch = getch(); //get
-            mvprintw(3, 0, "[To confirm again to close press any key]\n"); //cout
-            ch = getch(); //get
-            mvprintw(3, 0, "[To FOR SURE confirm again to close press any key]\n"); //cout
-            ch = getch(); //get
-            return true;  //exit
-        }
-    }
-    return false; //not full so give back false
+    clear(); //clear screen
+    printw("GAME OVER.\n"); //cout
+    printw("YOUR SCORE WAS: %d\n", SCORE); //cout
+    printw("\n[To close press any key]\n"); //cout
+    ch = getch(); //get
+    mvprintw(3, 0, "[To confirm again to close press any key]\n"); //cout
+    ch = getch(); //get
+    mvprintw(3, 0, "[To FOR SURE confirm again to close press any key]\n"); //cout
+    ch = getch(); //get
+    return true;  //exit
 }
 
 #endif //guard 

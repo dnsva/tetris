@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/anna/Documents/github/Tetris/build",
+  "command": "/usr/bin/clang++ -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.1.sdk -mmacosx-version-min=15.7 -std=gnu++20 -o macos/CMakeFiles/main.dir/main.cpp.o -c /Users/anna/Documents/github/Tetris/macos/main.cpp",
+  "file": "/Users/anna/Documents/github/Tetris/macos/main.cpp"
+}
+]

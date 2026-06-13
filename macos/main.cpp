@@ -59,12 +59,7 @@ int main(){
 		quit = menu();  //menu again
 	}
 
-	if(quit){ //if done
-		return 0; //exit program
-	}
-		
 	endwin(); //end ncurses mode
-
 	return 0; //exit
 }
 
@@ -101,7 +96,6 @@ bool menu(){ //menu, return true if we want to quit
             mvprintw(choice+1, 0, "%d. %s?\n", choice+1, options[choice].c_str()); //confirmation
             confirm = getch(); //get again
             if(confirm == 10){ //if enter again
-                endwin(); //close window
                 break; //get out of loop
             }else{ //if decided to not confirm 
                 attroff(A_BOLD); //no bold
@@ -163,24 +157,22 @@ bool menu(){ //menu, return true if we want to quit
 bool loop(){ //main game loop, returns true when game is done
 	
 	block ACTIVE_PIECE; //curr active piece
-	bool is_game_over; //stores whether or not game is over
 	int ch; //temp thing for input 
 
 	clear_rows(); //clear rows if anything is full 
 
 	ACTIVE_PIECE.generate_block(); //generate type 
+
+	if(!check_valid_pos(ACTIVE_PIECE.coords)){ //spawn blocked
+		check_game_over(); //show game over
+		return true; //game is over
+	}
 	
 	add_block(ACTIVE_PIECE); //add it to the board
 	draw_board(); //display the board
 
 	while(1){ //loop 
 
-		//see if game is over
-		is_game_over = check_game_over(); //check 
-		if(is_game_over){ //if done
-			return true; //game is over 
-		}
-		
 		//see if collision happened 
 		//if yes make piece to 1s so as if it does not exist
 		if(ACTIVE_PIECE.check_collision()){ //check
@@ -218,8 +210,7 @@ bool loop(){ //main game loop, returns true when game is done
 				ACTIVE_PIECE.rotate_block(); //call move 
                 break; //break
             case 'q': //if q pressed
-                endwin(); //end window
-                return true; //exit 
+                return true; //exit to menu
 		}
 	}
 }
@@ -260,16 +251,15 @@ void choose_difficulty(){ //select difficulty menu
             mvprintw(choice+1, 0, "%d. %s?\n", choice+1, options[choice].c_str()); //confirmation
             confirm = getch(); //get input 
             if(confirm == 10){ //if enter 2
-                endwin(); //end window
                 break; //get out
             }else{
                 attroff(A_BOLD); //disable bold
                 attroff(A_STANDOUT); //disable highlight 
                 if (confirm == KEY_DOWN){ //if down arrow
-                    choice = (choice + 1) % 3; //manip choice 
+                    choice = (choice + 1) % 4; //manip choice 
                 }
                 else if (confirm == KEY_UP){ //if up arrow
-                    choice = (choice + 3) % 3; //manip choice 
+                    choice = (choice + 3) % 4; //manip choice 
                 }
             }
         }

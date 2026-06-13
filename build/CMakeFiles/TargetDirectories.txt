@@ -1,0 +1,5 @@
+/Users/anna/Documents/github/Tetris/build/CMakeFiles/edit_cache.dir
+/Users/anna/Documents/github/Tetris/build/CMakeFiles/rebuild_cache.dir
+/Users/anna/Documents/github/Tetris/build/macos/CMakeFiles/main.dir
+/Users/anna/Documents/github/Tetris/build/macos/CMakeFiles/edit_cache.dir
+/Users/anna/Documents/github/Tetris/build/macos/CMakeFiles/rebuild_cache.dir
