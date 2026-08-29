@@ -34,6 +34,11 @@ void loop(){ //main loop
   display.setCursor(0,0); //set cursor to top 
   display.println(" ****** TETRIS ****** "); //title 
 
+  for(int i = 0; i < 7; i++){
+    pixels.setPixelColor(i, 255, 255, 255); //white
+  }
+  pixels.setPixelColor(8, 255, 192, 203); //white
+
   pixels.setPixelColor(7, 255, 192, 203); //pink 
   pixels.setPixelColor(9, 255, 192, 203); //pink
   pixels.setPixelColor(10, 255, 192, 203); //pink

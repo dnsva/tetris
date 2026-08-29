@@ -113,12 +113,9 @@ bool menu(){ //menu, return true if we want to quit
 	if(choice == 0){ //PLAY
 		choose_difficulty(); //call fn
 		clear_board();       //clear everything before start
-		while(1){ //loop
-			bool is_done = loop(); //check if done 
-			if(is_done){ //if done 
-				break; //break out of loop
-			}
-		}
+
+		while(loop()); //loop until the game is done. loop = 0 when done. loop = 1 when not done. 
+
 		if(SCORE > read_score(DIFFICULTY)){ //if high score was beat
 			write_score(SCORE, DIFFICULTY); //update 
 		}
@@ -165,7 +162,7 @@ bool loop(){ //main game loop, returns true when game is done
 
 	if(!check_valid_pos(ACTIVE_PIECE.coords)){ //spawn blocked
 		check_game_over(); //show game over
-		return true; //game is over
+		return false; //game is over
 	}
 	
 	add_block(ACTIVE_PIECE); //add it to the board
@@ -177,7 +174,7 @@ bool loop(){ //main game loop, returns true when game is done
 		//if yes make piece to 1s so as if it does not exist
 		if(ACTIVE_PIECE.check_collision()){ //check
 			add_block(ACTIVE_PIECE); //rewrite this pos with 1s 
-			return false; //this turn is OVER 
+			return true; //this turn is OVER 
 			
 		}
 
@@ -210,7 +207,7 @@ bool loop(){ //main game loop, returns true when game is done
 				ACTIVE_PIECE.rotate_block(); //call move 
                 break; //break
             case 'q': //if q pressed
-                return true; //exit to menu
+                return false; //exit to menu
 		}
 	}
 }
